@@ -26,13 +26,28 @@ func handleType(args []string) {
 
 }
 
+func handlePWD() {
+	dr, err := os.Getwd()
+	if err != nil {
+		fmt.Println("error printing working directory", err)
+	}
+	fmt.Println(dr)
+}
+
 func handleEcho(args []string) {
 	text := strings.Join(args, " ")
 	fmt.Println(text)
 }
+func handleCD(args []string) {
+	err := os.Chdir(args[0])
+	if err != nil {
+		fmt.Println("error changing directory")
+	}
 
+}
 func findBinInPath(bin string) (string, bool) {
 	paths := os.Getenv("PATH")
+	fmt.Println(paths)
 	for _, path := range strings.Split(paths, ":") {
 		file := path + "/" + bin
 		info, err := os.Stat(file)

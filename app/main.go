@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-var allCommands = []string{"exit", "type", "echo"}
+var allCommands = []string{"exit", "type", "echo", "pwd"}
 
 func hanldeInput() (command string, args []string) {
 	cliInput, err := bufio.NewReader(os.Stdin).ReadString('\n')
@@ -37,7 +37,10 @@ func run() {
 			handleEcho(args)
 		case "type":
 			handleType(args)
-
+		case "pwd":
+			handlePWD()
+		case "cd":
+			handleCD(args)
 		default:
 			{
 				_, exits := findBinInPath(command)
