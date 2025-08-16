@@ -17,7 +17,8 @@ func handleType(args []string) {
 		return
 
 	}
-	if file, exists := findBinInPath(args[0]); exists {
+	file, exists := findBinInPath(args[0])
+	if exists {
 		fmt.Fprintf(os.Stdout, "%s is %s\n", args[0], file)
 		return
 	}
@@ -32,10 +33,10 @@ func handleEcho(args []string) {
 
 func findBinInPath(bin string) (string, bool) {
 	paths := os.Getenv("PATH")
-	fmt.Println(paths)
 	for _, path := range strings.Split(paths, ":") {
 		file := path + "/" + bin
-		if _, err := os.Stat(file); err == nil {
+		info, err := os.Stat(file)
+		if err == nil && (info.Mode()&0111) != 0 {
 			return file, true
 		}
 	}
