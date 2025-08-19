@@ -39,15 +39,24 @@ func handleEcho(args []string) {
 	fmt.Println(text)
 }
 func handleCD(args []string) {
-	err := os.Chdir(args[0])
+	route := args[0]
+	home, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println("error changing directory")
+	}
+	if route[0] == '~' {
+		route = home + route[1:]
+	}
+	err = os.Chdir(route)
+	if err != nil {
+		fmt.Println("error changing directory")
+	} else {
+		fmt.Println(route)
 	}
 
 }
 func findBinInPath(bin string) (string, bool) {
 	paths := os.Getenv("PATH")
-	fmt.Println(paths)
 	for _, path := range strings.Split(paths, ":") {
 		file := path + "/" + bin
 		info, err := os.Stat(file)
